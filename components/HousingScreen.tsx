@@ -51,9 +51,9 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
   const hasActiveFilters = Object.values(filters).some(filter => filter !== '');
 
   return (
-    <div className="min-h-full bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+    <div className="min-h-full bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Enhanced search header */}
-      <div className="bg-white/95 backdrop-blur-sm border-b border-gray-100 p-4 sticky top-0 z-10">
+      <div className="bg-white/80 backdrop-blur-xl border-b border-gray-100 p-4 sticky top-0 z-10 shadow-sm">
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <div className="relative flex-1">
@@ -62,7 +62,7 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
                 placeholder="Rechercher par ville, quartier..."
                 value={filters.city}
                 onChange={(e) => setFilters({...filters, city: e.target.value})}
-                className="pl-10 bg-gray-50 border-gray-200 focus:border-emerald-300 focus:ring-emerald-200"
+                className="pl-10 bg-white/70 border-gray-200 focus:border-blue-400 focus:ring-blue-200 rounded-xl shadow-sm"
               />
             </div>
             <Sheet>
@@ -70,9 +70,9 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
                 <Button 
                   variant="outline" 
                   size="icon"
-                  className={`border-gray-200 ${hasActiveFilters ? 'border-emerald-300 bg-emerald-50' : ''}`}
+                  className={`border-gray-200 rounded-xl shadow-sm ${hasActiveFilters ? 'border-blue-400 bg-blue-50' : 'bg-white/70'}`}
                 >
-                  <Filter className={`w-4 h-4 ${hasActiveFilters ? 'text-emerald-600' : 'text-gray-600'}`} />
+                  <Filter className={`w-4 h-4 ${hasActiveFilters ? 'text-blue-600' : 'text-gray-600'}`} />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
@@ -152,11 +152,11 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
       {/* Housing list */}
       <div className="p-4 space-y-6 pb-6">
         {sortedHousings.map((housing) => (
-          <Card key={housing.id} className="relative overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+          <Card key={housing.id} className="relative overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] rounded-2xl border-0">
             {/* Boost badge */}
             {housing.sponsored && (
               <div className="absolute top-4 left-4 z-10">
-                <Badge className="brand-gradient-2 text-white shadow-lg">
+                <Badge className="bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-lg font-semibold">
                   <Zap className="w-3 h-3 mr-1" />
                   Boosté
                 </Badge>
@@ -166,7 +166,7 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
             {/* Favorite button */}
             <button
               onClick={() => toggleFavorite(housing.id)}
-              className="absolute top-4 right-4 z-10 p-3 rounded-full bg-black/20 backdrop-blur-sm hover:bg-black/30 transition-all duration-200 hover:scale-110"
+              className="absolute top-4 right-4 z-10 p-3 rounded-full bg-black/30 backdrop-blur-md hover:bg-black/40 transition-all duration-300 hover:scale-110 shadow-lg"
             >
               <Heart className={`w-5 h-5 ${favorites.includes(housing.id) ? 'fill-red-500 text-red-500' : 'text-white'}`} />
             </button>
@@ -182,7 +182,7 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
               
               {/* Photo count indicator */}
               <div className="absolute bottom-4 right-4">
-                <Badge className="bg-black/40 text-white backdrop-blur-sm">
+                <Badge className="bg-black/50 text-white backdrop-blur-md font-medium shadow-lg">
                   📷 {housing.photos.length}
                 </Badge>
               </div>
@@ -206,7 +206,7 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
               </div>
               
               {/* Key info */}
-              <div className="grid grid-cols-3 gap-4 mb-4 py-3 bg-gray-50 rounded-lg px-4">
+              <div className="grid grid-cols-3 gap-4 mb-4 py-3 bg-slate-50 rounded-xl px-4">
                 <div className="text-center">
                   <Users className="w-4 h-4 mx-auto mb-1 text-gray-600" />
                   <div className="text-sm font-medium">{housing.bedrooms}</div>
@@ -232,22 +232,22 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
               <div className="flex items-center justify-between">
                 <div className="flex gap-2">
                   {housing.furnished && (
-                    <Badge variant="secondary" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                    <Badge variant="secondary" className="text-xs bg-sky-50 text-sky-700 border-sky-200 font-medium">
                       🏠 Meublé
                     </Badge>
                   )}
-                  <Badge variant="secondary" className="text-xs bg-green-50 text-green-700 border-green-200">
+                  <Badge variant="secondary" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-200 font-medium">
                     <Wifi className="w-3 h-3 mr-1" />
                     Fibre
                   </Badge>
-                  <Badge variant="secondary" className="text-xs bg-purple-50 text-purple-700 border-purple-200">
+                  <Badge variant="secondary" className="text-xs bg-violet-50 text-violet-700 border-violet-200 font-medium">
                     <Car className="w-3 h-3 mr-1" />
                     Parking
                   </Badge>
                 </div>
                 
                 {userType === 'tenant' ? (
-                  <Button className="brand-gradient-1 text-white shadow-lg hover:shadow-xl transition-shadow">
+                  <Button className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-xl">
                     Visiter
                   </Button>
                 ) : (
@@ -257,7 +257,7 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
                         variant="outline" 
                         size="sm"
                         onClick={() => onBoostListing?.(housing.id, housing.title, housing.stats || { views: 0, clicks: 0, applications: 0 })}
-                        className="border-yellow-300 text-yellow-700 hover:bg-yellow-50"
+                        className="border-amber-300 text-amber-700 hover:bg-amber-50 rounded-lg"
                       >
                         <Zap className="w-3 h-3 mr-1" />
                         Actif
@@ -267,13 +267,13 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
                         variant="outline" 
                         size="sm"
                         onClick={() => onBoostListing?.(housing.id, housing.title, housing.stats || { views: 0, clicks: 0, applications: 0 })}
-                        className="border-gray-200 text-gray-600 hover:bg-gray-50"
+                        className="border-gray-200 text-gray-600 hover:bg-gray-50 rounded-lg"
                       >
                         <Zap className="w-3 h-3 mr-1" />
                         Booster
                       </Button>
                     )}
-                    <Button size="sm" className="brand-gradient-1 text-white">
+                    <Button size="sm" className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg">
                       Gérer
                     </Button>
                   </div>
@@ -301,14 +301,14 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
 
         {/* CTA Banner - Only show for tenant users */}
         {userType === 'tenant' && (
-          <Card className="brand-gradient-1 text-white">
+          <Card className="bg-gradient-to-r from-violet-500 to-purple-600 text-white rounded-2xl border-0">
             <CardContent className="p-6 text-center">
               <div className="text-3xl mb-3">🏡</div>
               <h3 className="text-xl font-semibold text-white mb-2">Vous avez un logement ?</h3>
               <p className="text-indigo-100 mb-4">
                 Publiez votre annonce et trouvez vos futurs colocataires rapidement
               </p>
-              <Button variant="secondary" className="bg-white text-indigo-600 hover:bg-indigo-50">
+              <Button variant="secondary" className="bg-white text-violet-600 hover:bg-violet-50 rounded-xl shadow-lg">
                 Publier une annonce
               </Button>
             </CardContent>
@@ -317,9 +317,9 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
 
         {/* Quick create button for property owners */}
         {(userType === 'tenant_with_housing' || userType === 'landlord') && sortedHousings.length === 0 && (
-          <Card className="bg-white shadow-lg">
+          <Card className="bg-white shadow-lg rounded-2xl border-0">
             <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl brand-gradient-1 flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
                 <Home className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Aucune annonce pour le moment</h3>
@@ -328,7 +328,7 @@ export function HousingScreen({ userType, onCreateListing, onBoostListing }: Hou
               </p>
               <Button 
                 onClick={onCreateListing}
-                className="brand-gradient-1 text-white shadow-lg"
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-xl"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Créer ma première annonce

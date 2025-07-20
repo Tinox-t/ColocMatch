@@ -205,27 +205,56 @@
 /* Custom utility classes for ColocMatch */
 @layer utilities {
   .brand-gradient-1 {
-    background: var(--brand-gradient-1);
+    background: linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #8B5CF6 100%);
   }
   
   .brand-gradient-2 {
-    background: var(--brand-gradient-2);
+    background: linear-gradient(135deg, #EC4899 0%, #F97316 50%, #EF4444 100%);
   }
   
   .brand-gradient-3 {
-    background: var(--brand-gradient-3);
+    background: linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%);
   }
   
   .glass-effect {
-    backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(24px);
+    background: rgba(255, 255, 255, 0.90);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
   
   .glass-effect-dark {
-    backdrop-filter: blur(20px);
-    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(24px);
+    background: rgba(0, 0, 0, 0.80);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 }
 

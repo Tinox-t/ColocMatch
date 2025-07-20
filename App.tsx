@@ -290,15 +290,15 @@ export default function App() {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Enhanced header with user type */}
-      <div className="bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm flex-shrink-0">
+      <div className="bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-lg flex-shrink-0">
         <div className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className={`w-12 h-12 rounded-2xl ${headerInfo.gradient} flex items-center justify-center shadow-lg`}>
+              <div className={`w-12 h-12 rounded-2xl ${headerInfo.gradient} flex items-center justify-center shadow-xl animate-float`}>
                 <span className="text-2xl">🏠</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">{headerInfo.title}</h1>
+                <h1 className="text-xl font-bold gradient-text">{headerInfo.title}</h1>
                 <p className="text-sm text-gray-600">{headerInfo.subtitle}</p>
               </div>
             </div>
@@ -309,14 +309,14 @@ export default function App() {
                 <Button 
                   size="sm" 
                   onClick={handleCreateListing}
-                  className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+                  className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <Plus className="w-4 h-4 mr-1" />
                   Publier
                 </Button>
               )}
               
-              <Badge className={`${userBadge.color} text-white shadow-lg`}>
+              <Badge className={`${userBadge.color} text-white shadow-lg font-semibold px-3 py-1 rounded-xl`}>
                 {userBadge.text}
               </Badge>
             </div>
@@ -325,7 +325,7 @@ export default function App() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto bg-gradient-to-br from-slate-50/50 via-white to-blue-50/50">
         {renderActiveScreen()}
       </div>
 

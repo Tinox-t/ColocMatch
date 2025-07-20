@@ -62,7 +62,7 @@ export function BottomNavigation({ activeTab, onTabChange, userType }: BottomNav
   const tabs = getTabsForUserType();
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm border-t border-gray-100 shadow-lg">
+    <div className="bg-white/80 backdrop-blur-xl border-t border-gray-100 shadow-2xl">
       <div className="flex">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -72,17 +72,17 @@ export function BottomNavigation({ activeTab, onTabChange, userType }: BottomNav
             <Button
               key={tab.id}
               variant="ghost"
-              className={`flex-1 flex flex-col items-center gap-1.5 py-3 px-2 h-auto rounded-none transition-all duration-200 ${
+              className={`flex-1 flex flex-col items-center gap-1.5 py-3 px-2 h-auto rounded-none transition-all duration-300 ${
                 isActive 
-                  ? `${tab.activeClass} shadow-inner` 
+                  ? `${tab.activeClass} shadow-inner scale-105` 
                   : `${tab.inactiveClass} hover:bg-gray-50`
               }`}
               onClick={() => onTabChange(tab.id)}
             >
-              <Icon className={`w-5 h-5 transition-transform duration-200 ${
-                isActive ? 'scale-110' : 'scale-100'
+              <Icon className={`w-5 h-5 transition-transform duration-300 ${
+                isActive ? 'scale-125' : 'scale-100'
               }`} />
-              <span className={`text-xs font-medium transition-colors duration-200 ${
+              <span className={`text-xs font-semibold transition-colors duration-300 ${
                 isActive ? 'opacity-100' : 'opacity-70'
               }`}>
                 {tab.label}
@@ -90,7 +90,7 @@ export function BottomNavigation({ activeTab, onTabChange, userType }: BottomNav
               
               {/* Active indicator */}
               {isActive && (
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-current rounded-b-full" />
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-current rounded-b-full shadow-lg" />
               )}
             </Button>
           );
