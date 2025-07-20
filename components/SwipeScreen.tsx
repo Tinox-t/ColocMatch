@@ -13,6 +13,8 @@ export function SwipeScreen() {
   const [matches, setMatches] = useState<User[]>([]);
   const [showMatch, setShowMatch] = useState<User | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
 
   const currentUser = mockUsers[currentUserIndex];
 
@@ -47,13 +49,38 @@ export function SwipeScreen() {
     setIsAnimating(false);
   };
 
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    setIsDragging(true);
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    setDragOffset({ x: clientX, y: clientY });
+  };
+
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const deltaX = clientX - dragOffset.x;
+    setDragOffset({ x: deltaX, y: 0 });
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    
+    if (Math.abs(dragOffset.x) > 100) {
+      handleSwipe(dragOffset.x > 0);
+    }
+    setDragOffset({ x: 0, y: 0 });
+  };
+
   if (showAd) {
     return (
-      <div className="h-full relative bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-6">
-        <div className="absolute inset-0 brand-gradient-1 flex items-center justify-center p-6">
-          <Card className="w-full max-w-sm glass-effect shadow-2xl">
+      <div className="h-full relative bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center p-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-600 flex items-center justify-center p-6">
+          <Card className="w-full max-w-sm backdrop-blur-xl bg-white/90 shadow-2xl border-0">
             <div className="p-6 text-center">
-              <div className="w-12 h-12 mx-auto mb-4 rounded-2xl brand-gradient-3 flex items-center justify-center">
+              <div className="w-12 h-12 mx-auto mb-4 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center shadow-lg">
                 <Zap className="w-6 h-6 text-white" />
               </div>
               <h2 className="text-lg font-bold text-gray-900 mb-2">
@@ -84,9 +111,9 @@ export function SwipeScreen() {
 
   if (showMatch) {
     return (
-      <div className="h-full relative bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-6">
-        <div className="absolute inset-0 brand-gradient-2 flex items-center justify-center p-6">
-          <Card className="w-full max-w-sm glass-effect shadow-2xl animate-pulse">
+      <div className="h-full relative bg-gradient-to-br from-pink-50 via-white to-rose-50 flex items-center justify-center p-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 flex items-center justify-center p-6">
+          <Card className="w-full max-w-sm backdrop-blur-xl bg-white/90 shadow-2xl border-0 animate-pulse">
             <div className="p-6 text-center">
               <div className="text-4xl mb-4 animate-bounce">🎉</div>
               <h2 className="text-lg font-bold text-gray-900 mb-2">
@@ -125,7 +152,7 @@ export function SwipeScreen() {
 
   if (!currentUser) {
     return (
-      <div className="h-full flex items-center justify-center p-6 bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+      <div className="h-full flex items-center justify-center p-6 bg-gradient-to-br from-slate-50 via-white to-gray-50">
         <div className="text-center">
           <div className="text-4xl mb-3">🏠</div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Plus de profils disponibles !</h3>
@@ -142,21 +169,21 @@ export function SwipeScreen() {
   }
 
   return (
-    <div className="h-full bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex flex-col">
+    <div className="h-full bg-gradient-to-br from-slate-50 via-white to-blue-50 flex flex-col">
       {/* Compact stats header */}
       <div className="p-4 pb-2">
-        <div className="flex justify-center items-center gap-6">
+        <div className="flex justify-center items-center gap-8">
           <div className="text-center">
-            <div className="text-lg font-bold text-gray-900">{matches.length}</div>
-            <div className="text-xs text-gray-500">Matchs</div>
+            <div className="text-xl font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">{matches.length}</div>
+            <div className="text-xs text-gray-600 font-medium">Matchs</div>
           </div>
           <div className="text-center">
-            <div className="text-lg font-bold text-gray-900">{currentUserIndex + 1}</div>
-            <div className="text-xs text-gray-500">Vus</div>
+            <div className="text-xl font-bold bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">{currentUserIndex + 1}</div>
+            <div className="text-xs text-gray-600 font-medium">Vus</div>
           </div>
           <div className="text-center">
-            <div className="text-lg font-bold text-gray-900">{mockUsers.length}</div>
-            <div className="text-xs text-gray-500">Total</div>
+            <div className="text-xl font-bold bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">{mockUsers.length}</div>
+            <div className="text-xs text-gray-600 font-medium">Total</div>
           </div>
         </div>
       </div>
@@ -167,12 +194,23 @@ export function SwipeScreen() {
           {/* Card Stack Effect */}
           <div className="relative">
             {/* Background card */}
-            <Card className="absolute inset-0 transform rotate-1 scale-95 opacity-20 bg-white shadow-lg" />
+            <Card className="absolute inset-0 transform rotate-2 scale-95 opacity-30 bg-white shadow-xl rounded-3xl" />
+            <Card className="absolute inset-0 transform rotate-1 scale-97 opacity-50 bg-white shadow-lg rounded-3xl" />
             
             {/* Main card - Optimized height */}
             <Card className={`relative overflow-hidden bg-white shadow-2xl transition-transform duration-300 ${
               isAnimating ? 'scale-95' : 'scale-100'
-            }`} style={{ height: '480px' }}>
+            } rounded-3xl border-0`} 
+            style={{ 
+              height: '480px',
+              transform: isDragging ? `translateX(${dragOffset.x}px) rotate(${dragOffset.x * 0.1}deg)` : undefined
+            }}
+            onMouseDown={handleDragStart}
+            onMouseMove={handleDragMove}
+            onMouseUp={handleDragEnd}
+            onTouchStart={handleDragStart}
+            onTouchMove={handleDragMove}
+            onTouchEnd={handleDragEnd}>
               <div className="h-full flex flex-col">
                 {/* Photo section - 65% of card */}
                 <div className="relative" style={{ height: '65%' }}>
@@ -187,9 +225,9 @@ export function SwipeScreen() {
                   
                   {/* Online indicator */}
                   <div className="absolute top-3 right-3">
-                    <div className="flex items-center gap-2 bg-black/20 backdrop-blur-sm rounded-full px-2 py-1">
+                    <div className="flex items-center gap-2 bg-black/30 backdrop-blur-md rounded-full px-3 py-1.5 shadow-lg">
                       <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                      <span className="text-white text-xs font-medium">En ligne</span>
+                      <span className="text-white text-xs font-semibold">En ligne</span>
                     </div>
                   </div>
                   
@@ -199,7 +237,7 @@ export function SwipeScreen() {
                       <h2 className="text-xl font-bold text-white">
                         {currentUser.name}, {currentUser.age}
                       </h2>
-                      <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm text-xs">
+                      <Badge className="bg-white/25 text-white border-white/40 backdrop-blur-md text-xs font-medium shadow-lg">
                         <MapPin className="w-3 h-3 mr-1" />
                         {currentUser.city}
                       </Badge>
@@ -221,24 +259,24 @@ export function SwipeScreen() {
                   </p>
                   
                   {/* Preferences tags - compact */}
-                  <div className="flex flex-wrap gap-1">
+                  <div className="flex flex-wrap gap-2">
                     {!currentUser.preferences.smoker && (
-                      <Badge variant="secondary" className="text-xs bg-green-50 text-green-700 border-green-200 px-2 py-1">
+                      <Badge variant="secondary" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-200 px-2 py-1 font-medium">
                         Non-fumeur
                       </Badge>
                     )}
                     {currentUser.preferences.pets && (
-                      <Badge variant="secondary" className="text-xs bg-orange-50 text-orange-700 border-orange-200 px-2 py-1">
+                      <Badge variant="secondary" className="text-xs bg-amber-50 text-amber-700 border-amber-200 px-2 py-1 font-medium">
                         🐕 Animaux
                       </Badge>
                     )}
                     {currentUser.preferences.homeWorking && (
-                      <Badge variant="secondary" className="text-xs bg-blue-50 text-blue-700 border-blue-200 px-2 py-1">
+                      <Badge variant="secondary" className="text-xs bg-sky-50 text-sky-700 border-sky-200 px-2 py-1 font-medium">
                         💻 Télétravail
                       </Badge>
                     )}
                     {currentUser.preferences.partyPerson && (
-                      <Badge variant="secondary" className="text-xs bg-purple-50 text-purple-700 border-purple-200 px-2 py-1">
+                      <Badge variant="secondary" className="text-xs bg-violet-50 text-violet-700 border-violet-200 px-2 py-1 font-medium">
                         🎉 Sociable
                       </Badge>
                     )}
@@ -252,28 +290,36 @@ export function SwipeScreen() {
       
       {/* Compact action buttons */}
       <div className="p-4 pt-2">
-        <div className="flex justify-center items-center gap-6 mb-3">
+        <div className="flex justify-center items-center gap-8 mb-4">
           <Button 
             size="lg"
             variant="outline"
-            className="w-14 h-14 rounded-full border-2 border-red-200 hover:border-red-300 hover:bg-red-50 transition-all duration-200 shadow-lg hover:shadow-xl"
+            className="w-16 h-16 rounded-full border-2 border-red-200 hover:border-red-400 hover:bg-red-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-110 bg-white"
             onClick={() => handleSwipe(false)}
           >
-            <X className="w-6 h-6 text-red-500" />
+            <X className="w-7 h-7 text-red-500" />
           </Button>
           
           <Button 
             size="lg"
-            className="w-16 h-16 rounded-full brand-gradient-2 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+            className="w-20 h-20 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110"
             onClick={() => handleSwipe(true)}
           >
-            <Heart className="w-8 h-8" />
+            <Heart className="w-9 h-9" />
           </Button>
         </div>
         
         {/* Compact progress indicator */}
         <div className="text-center">
-          <span className="text-sm text-gray-500">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="flex-1 bg-gray-200 rounded-full h-1.5">
+              <div 
+                className="bg-gradient-to-r from-blue-500 to-indigo-500 h-1.5 rounded-full transition-all duration-300"
+                style={{ width: `${((currentUserIndex + 1) / mockUsers.length) * 100}%` }}
+              />
+            </div>
+          </div>
+          <span className="text-sm text-gray-600 font-medium">
             {currentUserIndex + 1} / {mockUsers.length}
           </span>
         </div>
